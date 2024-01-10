@@ -13,20 +13,6 @@
                 flex-direction: column;
             }
 
-            p {
-                font-family: helvetica;
-                font-size: 24px;
-                text-align: center;
-                margin: 25px;
-            }
-
-            .small {
-                font-family: helvetica;
-                font-size: 18px;
-                text-align: center;
-                margin: 25px;
-            }
-
             button {
                 background-color: #008CBA;
                 border: none;
@@ -38,11 +24,26 @@
         </style>
     </head>
     <body>
-        <p>
-            Click the button to modify an existing PDF document with <code>pdf-lib</code>
-        </p>
-        <button onclick="modifyPdf()">Modify PDF</button>
-        <p class="small">(Your browser will download the resulting file)</p>
+        <fieldset>
+            <legend>આમંત્રણ: </legend>
+            <label for="name">નામ: </label>
+            <input type="text" id="name" name="name">
+            <br>
+            <br>
+            <label for="notru">ગણેશ નોતરું: </label>
+            <input type="text" id="notru" name="notru">
+            <br>
+            <br>
+            <label for="jan">જાન: </label>
+            <input type="text" id="jan" name="jan">
+            <br>
+            <br>
+            <label for="bhoj">ભોજન: </label>
+            <input type="text" id="bhoj" name="bhoj">
+            <br>
+            <br>
+            <button onclick="modifyPdf()">Download PDF</button>
+        </fieldset>
     </body>
     <script>
         const {degrees, PDFDocument, rgb, StandardFonts} = PDFLib
@@ -66,7 +67,7 @@
             const {width, height} = firstPage.getSize()
 
             // Draw a string of text diagonally across the first page
-            firstPage.drawText('This text was added with JavaScript!', {
+            firstPage.drawText(document.getElementById('name'), {
                 x: 5,
                 y: height / 2 + 300,
                 size: 50,
