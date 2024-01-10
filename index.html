@@ -26,8 +26,14 @@
     <body>
         <fieldset>
             <legend>આમંત્રણ: </legend>
-            <label for="name">નામ: </label>
-            <input type="text" id="name" name="name">
+            <label for="name1">નામ1: </label>
+            <input type="text" id="name1" name="name1">
+            <br>
+            <label for="name2">નામ2: </label>
+            <input type="text" id="name2" name="name2">
+            <br>
+            <label for="name3">નામ3: </label>
+            <input type="text" id="name3" name="name3">
             <br>
             <br>
             <label for="notru">ગણેશ નોતરું: </label>
@@ -67,14 +73,62 @@
             const {width, height} = firstPage.getSize()
 
             // Draw a string of text diagonally across the first page
-            firstPage.drawText(document.getElementById('name'), {
+            firstPage.drawText(document.getElementById('name1').value, {
                 x: 5,
-                y: height / 2 + 300,
+                y: 800,
                 size: 50,
                 font: helveticaFont,
                 color: rgb(0.95, 0.1, 0.1),
                 rotate: degrees(0),
-            })
+            });
+            firstPage.drawText(document.getElementById('name2').value, {
+                x: 50,
+                y: 900,
+                size: 50,
+                font: helveticaFont,
+                color: rgb(0.95, 0.1, 0.1),
+                rotate: degrees(0),
+            });
+            firstPage.drawText(document.getElementById('name3').value, {
+                x: 100,
+                y: 1000,
+                size: 50,
+                font: helveticaFont,
+                color: rgb(0.95, 0.1, 0.1),
+                rotate: degrees(0),
+            });
+
+            const nextPage = pages[3]
+
+            // Draw a string of text diagonally across the next page
+            nextPage.drawText(document.getElementById('notru').value, {
+                x: 50,
+                y: 800,
+                size: 50,
+                font: helveticaFont,
+                color: rgb(0.95, 0.1, 0.1),
+                rotate: degrees(0),
+            });
+
+            // Draw a string of text diagonally across the next page
+            nextPage.drawText(document.getElementById('jan').value, {
+                x: 50,
+                y: 900,
+                size: 50,
+                font: helveticaFont,
+                color: rgb(0.95, 0.1, 0.1),
+                rotate: degrees(0),
+            });
+
+            // Draw a string of text diagonally across the next page
+            nextPage.drawText(document.getElementById('bhoj').value, {
+                x: 50,
+                y: 1000,
+                size: 50,
+                font: helveticaFont,
+                color: rgb(0.95, 0.1, 0.1),
+                rotate: degrees(0),
+            });
 
             // Serialize the PDFDocument to bytes (a Uint8Array)
             const pdfBytes = await pdfDoc.save()
