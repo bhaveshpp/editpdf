@@ -1,140 +1,169 @@
 <html>
-    <head>
-        <meta charset="utf-8"/>
-        <script src="./pdf-lib.min.js"></script>
-        <script src="./download.js"></script>
-        <style>
-            body {
-                width: 100vw;
-                height: 100vh;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-            }
+  <head>
+    <meta charset="utf-8"/>
+    <script src="./pdf-lib.min.js"></script>
+    <script src="./fontkit.min.js"></script>
+    <script src="./download.js"></script>
+    <style>
+      body {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
 
-            button {
-                background-color: #008CBA;
-                border: none;
-                color: white;
-                padding: 15px 32px;
-                text-align: center;
-                font-size: 16px;
-            }
-        </style>
-    </head>
-    <body>
-        <fieldset>
-            <legend>આમંત્રણ: </legend>
-            <label for="name1">નામ1: </label>
-            <input type="text" id="name1" name="name1">
-            <br>
-            <label for="name2">નામ2: </label>
-            <input type="text" id="name2" name="name2">
-            <br>
-            <label for="name3">નામ3: </label>
-            <input type="text" id="name3" name="name3">
-            <br>
-            <br>
-            <label for="notru">ગણેશ નોતરું: </label>
-            <input type="text" id="notru" name="notru">
-            <br>
-            <br>
-            <label for="jan">જાન: </label>
-            <input type="text" id="jan" name="jan">
-            <br>
-            <br>
-            <label for="bhoj">ભોજન: </label>
-            <input type="text" id="bhoj" name="bhoj">
-            <br>
-            <br>
-            <button onclick="modifyPdf()">Download PDF</button>
-        </fieldset>
-    </body>
-    <script>
-        const {degrees, PDFDocument, rgb, StandardFonts} = PDFLib
+      button {
+        background-color: #008CBA;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <fieldset>
+      <legend>આમંત્રણ: </legend>
+      <label for="name1">નામ1: </label>
+      <input type="text" id="name1" name="name1">
+      <br>
+      <label for="name2">નામ2: </label>
+      <input type="text" id="name2" name="name2">
+      <br>
+      <label for="name3">નામ3: </label>
+      <input type="text" id="name3" name="name3">
+      <br>
+      <br>
+      <label for="notru">ગણેશ નોતરું: </label>
+      <input type="text" id="notru" name="notru">
+      <br>
+      <br>
+      <label for="jan">જાન: </label>
+      <input type="text" id="jan" name="jan">
+      <br>
+      <br>
+      <label for="bhoj">ભોજન: </label>
+      <input type="text" id="bhoj" name="bhoj">
+      <br>
+      <br>
+      <button onclick="modifyPdf()">Download PDF</button>
+    </fieldset>
+  </body>
+  <script>
+    const {degrees, PDFDocument, rgb, StandardFonts} = PDFLib
 
-        async function modifyPdf() {
-            // Fetch an existing PDF document
-            const url = './compressed.pdf'
-            const existingPdfBytes = await fetch(url).then(res=>res.arrayBuffer())
-
-            // Load a PDFDocument from the existing PDF bytes
-            const pdfDoc = await PDFDocument.load(existingPdfBytes)
-
-            // Embed the Helvetica font
-            const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
-
-            // Get the first page of the document
-            const pages = pdfDoc.getPages()
-            const firstPage = pages[0]
-
-            // Get the width and height of the first page
-            const {width, height} = firstPage.getSize()
-
-            // Draw a string of text diagonally across the first page
-            firstPage.drawText(document.getElementById('name1').value, {
-                x: 5,
-                y: 800,
-                size: 50,
-                font: helveticaFont,
-                color: rgb(0.95, 0.1, 0.1),
-                rotate: degrees(0),
-            });
-            firstPage.drawText(document.getElementById('name2').value, {
-                x: 50,
-                y: 900,
-                size: 50,
-                font: helveticaFont,
-                color: rgb(0.95, 0.1, 0.1),
-                rotate: degrees(0),
-            });
-            firstPage.drawText(document.getElementById('name3').value, {
-                x: 100,
-                y: 1000,
-                size: 50,
-                font: helveticaFont,
-                color: rgb(0.95, 0.1, 0.1),
-                rotate: degrees(0),
-            });
-
-            const nextPage = pages[3]
-
-            // Draw a string of text diagonally across the next page
-            nextPage.drawText(document.getElementById('notru').value, {
-                x: 50,
-                y: 800,
-                size: 50,
-                font: helveticaFont,
-                color: rgb(0.95, 0.1, 0.1),
-                rotate: degrees(0),
-            });
-
-            // Draw a string of text diagonally across the next page
-            nextPage.drawText(document.getElementById('jan').value, {
-                x: 50,
-                y: 900,
-                size: 50,
-                font: helveticaFont,
-                color: rgb(0.95, 0.1, 0.1),
-                rotate: degrees(0),
-            });
-
-            // Draw a string of text diagonally across the next page
-            nextPage.drawText(document.getElementById('bhoj').value, {
-                x: 50,
-                y: 1000,
-                size: 50,
-                font: helveticaFont,
-                color: rgb(0.95, 0.1, 0.1),
-                rotate: degrees(0),
-            });
-
-            // Serialize the PDFDocument to bytes (a Uint8Array)
-            const pdfBytes = await pdfDoc.save()
-
-            // Trigger the browser to download the PDF document
-            download(pdfBytes, "વ્યાસ_પરિવાર_લગ્ન_આમંત્રણ.pdf", "application/pdf");
+    function readFileAsBlob(filePath) {
+      return fetch(filePath).then(response=>{
+        if (!response.ok) {
+          throw new Error('Failed to fetch the file. Status code: ' + response.status);
         }
-    </script>
+        return response.blob();
+      }
+      );
+    }
+
+    async function modifyPdf() {
+      // Fetch an existing PDF document
+      const url = './compressed.pdf'
+      const existingPdfBytes = await fetch(url).then(res=>res.arrayBuffer());
+
+      // Load a PDFDocument from the existing PDF bytes
+      const pdfDoc = await PDFDocument.load(existingPdfBytes);
+
+      // Embed the Helvetica font
+      const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+      pdfDoc.registerFontkit(fontkit);
+
+      const fontBytes = readFileAsBlob('./NotoSansGujarati.ttf').then(blob=>{
+        // Work with the Blob here, for example, create a FileReader to read its content
+        var fileReader = new FileReader();
+        fileReader.onload = function() {
+          // console.log('File Content:', fileReader.result);
+        }
+        ;
+        return fileReader.readAsText(blob, 'utf-8');
+      }
+      ).catch(error=>{
+        console.error('Error reading file:', error.message);
+      }
+      );
+
+      const customFont = await pdfDoc.embedFont(fontBytes);
+
+      // Get the first page of the document
+      const pages = pdfDoc.getPages();
+      const firstPage = pages[0];
+
+      // Get the width and height of the first page
+      const {width, height} = firstPage.getSize();
+
+      //Draw a string of text diagonally across the first page
+      firstPage.drawText(document.getElementById('name1').value, {
+        x: 105,
+        y: 790,
+        size: 50,
+        font: customFont,
+        color: rgb(0.95, 0.1, 0.1),
+        rotate: degrees(0),
+      });
+      firstPage.drawText(document.getElementById('name2').value, {
+        x: 50,
+        y: 900,
+        size: 50,
+        font: helveticaFont,
+        color: rgb(0.95, 0.1, 0.1),
+        rotate: degrees(0),
+      });
+      firstPage.drawText(document.getElementById('name3').value, {
+        x: 100,
+        y: 1000,
+        size: 50,
+        font: helveticaFont,
+        color: rgb(0.95, 0.1, 0.1),
+        rotate: degrees(0),
+      });
+
+      const nextPage = pages[3]
+
+      // Draw a string of text diagonally across the next page
+      nextPage.drawText(document.getElementById('notru').value, {
+        x: 50,
+        y: 800,
+        size: 50,
+        font: helveticaFont,
+        color: rgb(0.95, 0.1, 0.1),
+        rotate: degrees(0),
+      });
+
+      // Draw a string of text diagonally across the next page
+      nextPage.drawText(document.getElementById('jan').value, {
+        x: 50,
+        y: 900,
+        size: 50,
+        font: helveticaFont,
+        color: rgb(0.95, 0.1, 0.1),
+        rotate: degrees(0),
+      });
+
+      // Draw a string of text diagonally across the next page
+      nextPage.drawText(document.getElementById('bhoj').value, {
+        x: 50,
+        y: 1000,
+        size: 50,
+        font: helveticaFont,
+        color: rgb(0.95, 0.1, 0.1),
+        rotate: degrees(0),
+      });
+
+      // Serialize the PDFDocument to bytes (a Uint8Array)
+      const pdfBytes = await pdfDoc.save()
+
+      // Trigger the browser to download the PDF document
+      download(pdfBytes, "વ્યાસ_પરિવાર_લગ્ન_આમંત્રણ.pdf", "application/pdf");
+    }
+  </script>
 </html>
